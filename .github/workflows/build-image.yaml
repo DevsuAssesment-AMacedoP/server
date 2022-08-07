@@ -9,11 +9,19 @@ env:
   IMAGE_NAME: devsu-assesment-amacedo/server
 
 jobs:
-  build-and-push-image:
+  test-build-and-push-image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Setup go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19.x
+
+      - name: Test before build
+        run: make test
 
       - name: Log into the container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
