@@ -14,4 +14,5 @@ dep_verify:
 
 .PHONE: lint
 lint:
+	go install honnef.co/go/tools/cmd/staticcheck@latest
 	staticcheck ./...
