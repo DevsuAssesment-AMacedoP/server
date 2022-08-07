@@ -25,6 +25,6 @@ COPY --from=builder /app/bin/server /server
 
 EXPOSE 5000
 
-USER nonroot:nonroot
+USER 1000:1000
 
 ENTRYPOINT ["/server"]
