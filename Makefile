@@ -6,7 +6,7 @@ build:
 
 .PHONY: test
 test:
-	go build test ./... -v -cover
+	go test ./... -v -cover
 
 .PHONY: dep_verify
 dep_verify:
