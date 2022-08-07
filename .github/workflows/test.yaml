@@ -1,0 +1,19 @@
+name: Test
+
+on:
+  push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup golang
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19.x
+
+      - name: Test package
+        run: make dep_verify lint test
