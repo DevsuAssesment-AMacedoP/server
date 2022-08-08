@@ -17,11 +17,11 @@ COPY . .
 RUN make build
 
 ## Deploy
-FROM gcr.io/distroless/base-debian10
+FROM gcr.io/distroless/static-debian11
 
 WORKDIR /
 
-COPY --from=builder /app/bin/server /server
+COPY --from=builder /app/bin/server /
 
 EXPOSE 5000
 

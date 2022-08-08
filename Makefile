@@ -2,7 +2,7 @@ BINARY_NAME=server
 
 .PHONY: build
 build:
-	go build -o bin/${BINARY_NAME}
+	CGO_ENABLED=0 go build -o bin/${BINARY_NAME}
 
 .PHONY: test
 test:
