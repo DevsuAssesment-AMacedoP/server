@@ -29,7 +29,7 @@ func TestDevOpsHandler(t *testing.T) {
 			method:     http.MethodPost,
 			input:      ``,
 			headers:    map[string]string{},
-			want:       "Content-Type header is not application/json",
+			want:       `{"message":"Content-Type header is not application/json"}`,
 			statusCode: http.StatusUnsupportedMediaType,
 		},
 		{
@@ -37,7 +37,7 @@ func TestDevOpsHandler(t *testing.T) {
 			method:     http.MethodPost,
 			input:      ``,
 			headers:    map[string]string{"Content-Type": "application/json"},
-			want:       "Request body must not be empty",
+			want:       `{"message":"Request body must not be empty"}`,
 			statusCode: http.StatusBadRequest,
 		},
 		{
@@ -45,7 +45,7 @@ func TestDevOpsHandler(t *testing.T) {
 			method:     http.MethodPost,
 			input:      `{ "message" : 45, "to": Juan Perez", "from": "Rita Asturia", "timeToLifeSec" : 45 }`,
 			headers:    map[string]string{"Content-Type": "application/json"},
-			want:       `Request body contains badly-formed JSON (at position 25)`,
+			want:       `{"message":"Request body contains badly-formed JSON (at position 25)"}`,
 			statusCode: http.StatusBadRequest,
 		},
 		{
@@ -53,7 +53,7 @@ func TestDevOpsHandler(t *testing.T) {
 			method:     http.MethodPost,
 			input:      `{ "message" : 45, "to": "Juan Perez", "from": "Rita Asturia", "timeToLifeSec" : 45 }`,
 			headers:    map[string]string{"Content-Type": "application/json"},
-			want:       `Request body contains an invalid value for the "message" field (at position 16)`,
+			want:       `{"message":"Request body contains an invalid value for the \"message\" field (at position 16)"}`,
 			statusCode: http.StatusBadRequest,
 		},
 		{
@@ -61,7 +61,7 @@ func TestDevOpsHandler(t *testing.T) {
 			method:     http.MethodPost,
 			input:      `{ "message" : "st`,
 			headers:    map[string]string{"Content-Type": "application/json"},
-			want:       "Request body contains badly-formed JSON",
+			want:       `{"message":"Request body contains badly-formed JSON"}`,
 			statusCode: http.StatusBadRequest,
 		},
 		{
@@ -69,7 +69,7 @@ func TestDevOpsHandler(t *testing.T) {
 			method:     http.MethodPost,
 			input:      `{ "message" : "This is a test", "to": "Juan Perez", "from": "Rita Asturia", "timeToLifeSec" : 45, "unknown": "unknown" }`,
 			headers:    map[string]string{"Content-Type": "application/json"},
-			want:       `Request body contains unknown field "unknown"`,
+			want:       `{"message":"Request body contains unknown field \"unknown\""}`,
 			statusCode: http.StatusBadRequest,
 		},
 		{
@@ -93,7 +93,7 @@ func TestDevOpsHandler(t *testing.T) {
 
 			responseRecorder := httptest.NewRecorder()
 
-			DevOpsHandler{}.ServeHTTP(responseRecorder, request)
+			HandleDevOps(responseRecorder, request)
 
 			if responseRecorder.Code != tc.statusCode {
 				t.Errorf("Want status '%d', got '%d'", tc.statusCode, responseRecorder.Code)
