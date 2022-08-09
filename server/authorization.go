@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/golang-jwt/jwt/v4"
 )
@@ -13,6 +14,7 @@ func ApiKeyMiddleware(apiKey string) func(handler http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			apiKeyRequest := r.Header.Get(apiKeyHeader)
+			apiKeyRequest = strings.TrimSuffix(apiKeyRequest, "\n")
 			if apiKeyRequest == "" {
 				returnErrorResponse(w, errorResponse{
 					status: http.StatusUnauthorized,
