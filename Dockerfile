@@ -17,13 +17,11 @@ COPY . .
 RUN make build
 
 ## Deploy
-FROM gcr.io/distroless/static-debian11
+FROM golang:1.19-alpine
 
 WORKDIR /
 
 COPY --from=builder /app/bin/server /
-
-EXPOSE 5000
 
 USER 1000:1000
 
